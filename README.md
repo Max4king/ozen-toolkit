@@ -2,7 +2,7 @@
 ## What is Different
 * I have change from the whisper large-v2 model from openai to faster-whisper large-v1 model.
 NOTE: The reason for large-v1 instead of v2 is due to error from the model. I am too lazy to find the problem. It would freeze the entire program on random audio file and crash the program.
-Benefits: It is faster and more efficient.
+* Benefits: It is faster and more efficient.
 
 # Original Message:
 
