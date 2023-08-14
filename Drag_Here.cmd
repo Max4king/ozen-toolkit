@@ -65,6 +65,6 @@ call "%v_conda_path%\Scripts\activate.bat" "%v_conda_env_name%"
 ::python windows_install.py
 :START_GUI
 ::set HasChanges=0
-python ozen.py "%~1"
+python ozen-prune.py "%~1"
 pause
 :cmd /k

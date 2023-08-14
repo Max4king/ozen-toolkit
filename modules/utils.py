@@ -27,7 +27,7 @@ def create_output_structure(output_path, project_name, project_timestamp):
     #create_dir(output_path)
     return output_path
 def add_to_textfile(file_path, text):
-    with open(file_path, "a") as text_file:
+    with open(file_path, "a", encoding="utf-8") as text_file:
         text_file.write(text)
 
 def convert_to_wav(file_path):
@@ -170,21 +170,36 @@ def init_transcribe_pipeline(model_name,device=0):
     )
     
     return pipe
-def transcribe_audio(audio_file,pipe):
-    # Load the audio file
+# def transcribe_audio(audio_file,pipe):
+#     # Load the audio file
     
-    #audio = AudioSegment.from_file(audio_file)
+#     #audio = AudioSegment.from_file(audio_file)
 
-    # Convert to raw audio data
-    #raw_audio_data = audio.raw_data
-    #sample_rate = audio.frame_rate
-    #sample_width = audio.sample_width
-    #num_channels = audio.channels
+#     # Convert to raw audio data
+#     #raw_audio_data = audio.raw_data
+#     #sample_rate = audio.frame_rate
+#     #sample_width = audio.sample_width
+#     #num_channels = audio.channels
 
-    # Create the ASR pipeline
+#     # Create the ASR pipeline
 
-    # Process the audio file
-    #prediction = pipe(audio, return_timestamps=True)["chunks"]
-    prediction = pipe(audio_file)["text"]
-    #print(prediction)
-    return prediction
+#     # Process the audio file
+#     #prediction = pipe(audio, return_timestamps=True)["chunks"]
+#     prediction = pipe(audio_file)["text"]
+#     #print(prediction)
+#     return prediction
+from faster_whisper import WhisperModel
+
+def transcribe_audio(audio_file, model_size=None, device="cuda"):
+    try:
+        if model_size is None:
+            model_size = "large-v1"
+        model = WhisperModel(model_size, device=device, compute_type="float16")
+        segments, info = model.transcribe(audio_file, beam_size=5)
+        text_out = ""
+        for segment in segments:
+            text_out += segment.text
+        return text_out
+    except Exception as e:
+        print("Error occurred:", e)
+        return ""
